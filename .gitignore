@@ -1,0 +1,17 @@
+*.bat
+*.sh
+/*/
+LICENSE.txt
+CHANGELOG
+
+!/src/
+/src/minecraft/*
+!/src/minecraft/oilcraft/
+!/src/minecraft/universalelectricity/
+!/resources/
+!/models/
+!info.txt
+!publish.bat
+!include.bat
+!buildlocal.bat
+!/README
