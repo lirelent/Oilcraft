@@ -19,6 +19,6 @@ public class Engine extends Item
 	@Override
 	public String getTextureFile()
 	{
-		return Oilcraft.ITEM_TEXTURE_PATH;
+		return Oilcraft.ITEM_TEXTURE;
 	}
 }

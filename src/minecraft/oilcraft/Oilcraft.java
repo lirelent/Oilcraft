@@ -1,10 +1,13 @@
 package oilcraft;
 
-import net.minecraft.block.Block;
+import java.io.File;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import oilcraft.generators.OilGenerator;
 import oilcraft.generators.OilGeneratorTileEntity;
+import oilcraft.liquids.OilFlow;
+import oilcraft.liquids.OilStill;
 import oilcraft.parts.Alternator;
 import oilcraft.parts.ControlPanel;
 import oilcraft.parts.CoolantSystem;
@@ -24,7 +27,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "OilCraft", version = Oilcraft.VERSION, useMetadata = true)
+@Mod(modid = "OilCraft", name= "OilCraft", version = Oilcraft.VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class Oilcraft
 {
@@ -33,10 +36,10 @@ public class Oilcraft
 
 	public static final String VERSION = "0.0.1";
 	public static final String TEXTURE_PATH = "/oilcraft/textures/";
-	public static final String BLOCK_TEXTURE_PATH = TEXTURE_PATH + "blocks.png";
-	public static final String ITEM_TEXTURE_PATH = TEXTURE_PATH + "items.png";
+	public static final String BLOCK_TEXTURE = TEXTURE_PATH + "blocks.png";
+	public static final String ITEM_TEXTURE = TEXTURE_PATH + "items.png";
 
-	public static final Configuration CONFIGURATION = new Configuration(Loader.instance().getConfigDir(), true);
+	public static final Configuration CONFIGURATION = new Configuration(new File(Loader.instance().getConfigDir(), "OilCraft.cfg"));
 
 	// Items
 	public static Item voltageRegulatorItem;
@@ -46,9 +49,6 @@ public class Oilcraft
 	public static Item fuelSystemItem;
 	public static Item lubricationSystemItem;
 	public static Item coolantSystemItem;
-
-	// Blocks
-	public static Block oilGenerator;
 
 	@PreInit
 	public void preLoad(FMLPreInitializationEvent event)
@@ -63,7 +63,9 @@ public class Oilcraft
 		lubricationSystemItem = new LubricationSystem(CONFIGURATION.get("items", "Lubcrication_System", 8005).getInt());
 		coolantSystemItem = new CoolantSystem(CONFIGURATION.get("items", "Coolant_System", 8006).getInt());
 
-		oilGenerator = new OilGenerator(CONFIGURATION.get("blocks", "Oil_Generator", 500).getInt());
+		OilGenerator.makeInstance(CONFIGURATION.get("blocks", "Oil_Generator", 500).getInt());
+		OilStill.makeInstance(CONFIGURATION.get("blocks", "Oil_Still", 501).getInt());
+		OilFlow.makeInstance(CONFIGURATION.get("blocks", "Oil_Flow", 502).getInt());
 
 		CONFIGURATION.save();
 	}
@@ -81,9 +83,18 @@ public class Oilcraft
 		LanguageRegistry.addName(lubricationSystemItem, "Lubrication System");
 		LanguageRegistry.addName(coolantSystemItem, "Coolant System");
 
+		OilGenerator oilGenerator = OilGenerator.getInstance();
+		LanguageRegistry.addName(oilGenerator , "Oil Generator");
+		GameRegistry.registerBlock(oilGenerator, "oilGenerator");
 		GameRegistry.registerTileEntity(OilGeneratorTileEntity.class, "oilGenerator");
-
-		LanguageRegistry.addName(oilGenerator, "Oil Generator");
+		
+		OilStill oilStill = OilStill.getInstance();
+		LanguageRegistry.addName(oilStill , "Oil Still");
+		GameRegistry.registerBlock(oilStill, "oilStill");
+		
+		OilFlow oilFlow = OilFlow.getInstance();
+		LanguageRegistry.addName(oilFlow , "Oil Flow");
+		GameRegistry.registerBlock(oilFlow, "oilFlow");
 	}
 
 	public void registerRecipes()

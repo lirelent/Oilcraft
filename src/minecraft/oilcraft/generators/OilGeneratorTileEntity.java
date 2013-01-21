@@ -1,13 +1,38 @@
 package oilcraft.generators;
 
+import universalelectricity.core.implement.IConductor;
+import universalelectricity.prefab.tile.TileEntityElectricityProducer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class OilGeneratorTileEntity extends TileEntity implements IInventory
+public class OilGeneratorTileEntity extends TileEntityElectricityProducer implements IInventory
 {
+	/**
+	 * Maximum amount of energy needed to generate electricity
+	 */
+	private static final int MAX_GENERATE_WATTS = 10000;
 
+	/**
+	 * Amount of heat the coal generator needs before generating electricity.
+	 */
+	private static final int MIN_GENERATE_WATTS = 100;
+
+	private static final float BASE_ACCELERATION = 0.3f;
+
+	/**
+	 * Per second
+	 */
+	private double prevGenerateWatts, generateWatts = 0;
+
+	private IConductor connectedElectricUnit = null;
+	/**
+	 * The number of ticks that a fresh copy of the currently-burning item would keep the furnace
+	 * burning for
+	 */
+	private int itemCookTime = 0;
+	
 	private ItemStack[] inv;
 
 	public OilGeneratorTileEntity()
