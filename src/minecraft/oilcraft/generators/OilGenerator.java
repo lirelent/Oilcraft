@@ -1,5 +1,6 @@
 package oilcraft.generators;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +24,7 @@ public class OilGenerator extends BlockMachine {
 
 	private OilGenerator(int id) {
 		super("Oil Generator", id, UniversalElectricity.machine, UETab.INSTANCE);
+    	FMLLog.warning("gen id is "+id);
 		this.blockIndexInTexture = 0;
 	}
 

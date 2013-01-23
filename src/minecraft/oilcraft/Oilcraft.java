@@ -73,10 +73,10 @@ public class Oilcraft {
 
 		OilGenerator.makeInstance(CONFIGURATION.get("blocks", "Oil_Generator",
 				500).getInt());
-		OilStill.makeInstance(CONFIGURATION.get("blocks", "Oil_Still", 501)
-				.getInt());
-		OilFlow.makeInstance(CONFIGURATION.get("blocks", "Oil_Flow", 502)
-				.getInt());
+		int stillId = CONFIGURATION.get("blocks", "Oil_Still", 601)
+				.getInt();
+		OilStill.makeInstance(stillId);
+		OilFlow.makeInstance(stillId - 1);
 
 		CONFIGURATION.save();
 	}
@@ -99,13 +99,13 @@ public class Oilcraft {
 		GameRegistry.registerTileEntity(OilGeneratorTileEntity.class,
 				"oilGenerator");
 
-		/*OilStill oilStill = OilStill.getInstance();
+		OilStill oilStill = OilStill.getInstance();
 		LanguageRegistry.addName(oilStill, "Oil Still");
 		GameRegistry.registerBlock(oilStill, "oilStill");
 
 		OilFlow oilFlow = OilFlow.getInstance();
 		LanguageRegistry.addName(oilFlow, "Oil Flow");
-		GameRegistry.registerBlock(oilFlow, "oilFlow");*/
+		GameRegistry.registerBlock(oilFlow, "oilFlow");
 
 		// liquid world gen stuff
 		ReplaceWithLiquidWorldGen liquidWorldGen = new ReplaceWithLiquidWorldGen();

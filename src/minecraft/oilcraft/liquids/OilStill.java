@@ -3,11 +3,13 @@
  */
 package oilcraft.liquids;
 
-import oilcraft.Oilcraft;
 import net.minecraft.block.BlockStationary;
 import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.liquids.IBlockLiquid;
+import net.minecraft.world.World;
+import net.minecraftforge.liquids.ILiquid;
+import oilcraft.Oilcraft;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -15,14 +17,16 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author lirelent
  *
  */
-public class OilStill extends BlockStationary implements IBlockLiquid {
+public class OilStill extends BlockStationary implements ILiquid {
 	private static OilStill instance;
 	
 	private OilStill(int blockId)
     {
             super(blockId, Material.water);
+        	FMLLog.warning("still id is "+blockId);
             this.setHardness(100);
             this.disableStats();
+            this.setBlockName("Oil(still)");
     }
 	
 	public static void makeInstance(int blockId)
@@ -72,33 +76,7 @@ public class OilStill extends BlockStationary implements IBlockLiquid {
     }
 
     @Override
-    public boolean willGenerateSources()
-    {
-            return false;
+    public boolean isBlockReplaceable(World world, int x, int y, int z) {
+    	return true;
     }
-
-    @Override
-    public int getFlowDistance()
-    {
-            return OilFlow.getInstance().getFlowDistance();
-    }
-
-    @Override
-    public byte[] getLiquidRGB()
-    {
-            return null;
-    }
-
-    @Override
-    public String getLiquidBlockTextureFile()
-    {
-            return Oilcraft.BLOCK_TEXTURE; //Is this supposed to be the animation?
-    }
-
-    @Override
-    public NBTTagCompound getLiquidProperties()
-    {
-            return null;
-    }
-
 }
