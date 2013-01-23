@@ -8,6 +8,8 @@ import oilcraft.generators.OilGenerator;
 import oilcraft.generators.OilGeneratorTileEntity;
 import oilcraft.liquids.OilFlow;
 import oilcraft.liquids.OilStill;
+import oilcraft.liquids.worldGen.ReplaceWithLiquidWorldGen;
+import oilcraft.liquids.worldGen.ToGenerateLiquid;
 import oilcraft.parts.Alternator;
 import oilcraft.parts.ControlPanel;
 import oilcraft.parts.CoolantSystem;
@@ -27,10 +29,9 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "OilCraft", name= "OilCraft", version = Oilcraft.VERSION)
+@Mod(modid = "OilCraft", name = "OilCraft", version = Oilcraft.VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
-public class Oilcraft
-{
+public class Oilcraft {
 	@SidedProxy(clientSide = "oilcraft.proxy.ClientProxy", serverSide = "oilcraft.proxy.CommonProxy")
 	public static CommonProxy proxy;
 
@@ -39,7 +40,8 @@ public class Oilcraft
 	public static final String BLOCK_TEXTURE = TEXTURE_PATH + "blocks.png";
 	public static final String ITEM_TEXTURE = TEXTURE_PATH + "items.png";
 
-	public static final Configuration CONFIGURATION = new Configuration(new File(Loader.instance().getConfigDir(), "OilCraft.cfg"));
+	public static final Configuration CONFIGURATION = new Configuration(
+			new File(Loader.instance().getConfigDir(), "OilCraft.cfg"));
 
 	// Items
 	public static Item voltageRegulatorItem;
@@ -51,28 +53,36 @@ public class Oilcraft
 	public static Item coolantSystemItem;
 
 	@PreInit
-	public void preLoad(FMLPreInitializationEvent event)
-	{
+	public void preLoad(FMLPreInitializationEvent event) {
 		CONFIGURATION.load();
 
-		voltageRegulatorItem = new VoltageRegulator(CONFIGURATION.get("items", "Voltage_Regulator", 8000).getInt());
-		alternatorItem = new Alternator(CONFIGURATION.get("items", "Alternator", 8001).getInt());
-		controlPanelItem = new ControlPanel(CONFIGURATION.get("items", "Control_Panel", 8002).getInt());
-		engineItem = new Engine(CONFIGURATION.get("items", "Engine", 8003).getInt());
-		fuelSystemItem = new FuelSystem(CONFIGURATION.get("items", "Fuel_System", 8004).getInt());
-		lubricationSystemItem = new LubricationSystem(CONFIGURATION.get("items", "Lubcrication_System", 8005).getInt());
-		coolantSystemItem = new CoolantSystem(CONFIGURATION.get("items", "Coolant_System", 8006).getInt());
+		voltageRegulatorItem = new VoltageRegulator(CONFIGURATION.get("items",
+				"Voltage_Regulator", 8000).getInt());
+		alternatorItem = new Alternator(CONFIGURATION.get("items",
+				"Alternator", 8001).getInt());
+		controlPanelItem = new ControlPanel(CONFIGURATION.get("items",
+				"Control_Panel", 8002).getInt());
+		engineItem = new Engine(CONFIGURATION.get("items", "Engine", 8003)
+				.getInt());
+		fuelSystemItem = new FuelSystem(CONFIGURATION.get("items",
+				"Fuel_System", 8004).getInt());
+		lubricationSystemItem = new LubricationSystem(CONFIGURATION.get(
+				"items", "Lubcrication_System", 8005).getInt());
+		coolantSystemItem = new CoolantSystem(CONFIGURATION.get("items",
+				"Coolant_System", 8006).getInt());
 
-		OilGenerator.makeInstance(CONFIGURATION.get("blocks", "Oil_Generator", 500).getInt());
-		OilStill.makeInstance(CONFIGURATION.get("blocks", "Oil_Still", 501).getInt());
-		OilFlow.makeInstance(CONFIGURATION.get("blocks", "Oil_Flow", 502).getInt());
+		OilGenerator.makeInstance(CONFIGURATION.get("blocks", "Oil_Generator",
+				500).getInt());
+		OilStill.makeInstance(CONFIGURATION.get("blocks", "Oil_Still", 501)
+				.getInt());
+		OilFlow.makeInstance(CONFIGURATION.get("blocks", "Oil_Flow", 502)
+				.getInt());
 
 		CONFIGURATION.save();
 	}
 
 	@Init
-	public void load(FMLInitializationEvent event)
-	{
+	public void load(FMLInitializationEvent event) {
 		proxy.registerRenderers();
 
 		LanguageRegistry.addName(voltageRegulatorItem, "Voltage Regulator");
@@ -84,21 +94,27 @@ public class Oilcraft
 		LanguageRegistry.addName(coolantSystemItem, "Coolant System");
 
 		OilGenerator oilGenerator = OilGenerator.getInstance();
-		LanguageRegistry.addName(oilGenerator , "Oil Generator");
+		LanguageRegistry.addName(oilGenerator, "Oil Generator");
 		GameRegistry.registerBlock(oilGenerator, "oilGenerator");
-		GameRegistry.registerTileEntity(OilGeneratorTileEntity.class, "oilGenerator");
-		
-		OilStill oilStill = OilStill.getInstance();
-		LanguageRegistry.addName(oilStill , "Oil Still");
+		GameRegistry.registerTileEntity(OilGeneratorTileEntity.class,
+				"oilGenerator");
+
+		/*OilStill oilStill = OilStill.getInstance();
+		LanguageRegistry.addName(oilStill, "Oil Still");
 		GameRegistry.registerBlock(oilStill, "oilStill");
-		
+
 		OilFlow oilFlow = OilFlow.getInstance();
-		LanguageRegistry.addName(oilFlow , "Oil Flow");
-		GameRegistry.registerBlock(oilFlow, "oilFlow");
+		LanguageRegistry.addName(oilFlow, "Oil Flow");
+		GameRegistry.registerBlock(oilFlow, "oilFlow");*/
+
+		// liquid world gen stuff
+		ReplaceWithLiquidWorldGen liquidWorldGen = new ReplaceWithLiquidWorldGen();
+		ToGenerateLiquid oilGen = new ToGenerateLiquid(55, 60, 1, 5, 16, 5,
+				OilStill.getInstance().blockID);
+		liquidWorldGen.add(oilGen, "Oil");
 	}
 
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		// TODO: Create recipes
 	}
 

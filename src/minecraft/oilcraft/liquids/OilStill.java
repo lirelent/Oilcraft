@@ -44,7 +44,7 @@ public class OilStill extends BlockStationary implements IBlockLiquid {
     @SideOnly(Side.CLIENT)
     public int getBlockColor()
     {
-            return 0x000000;
+            return 0xFFFFFF;
     }
 
     @Override
