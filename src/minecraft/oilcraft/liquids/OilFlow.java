@@ -25,18 +25,19 @@ public class OilFlow extends BlockFlowing implements ILiquid {
     int[] flowCost = new int[4];
     boolean[] isOptimalFlowDirection = new boolean[4];
 
-    private OilFlow(int blockId)
+    private OilFlow(int blockId, int textureIndex)
     {
             super(blockId, Material.water);
         	FMLLog.warning("flow id is "+blockId);
             this.disableStats();
             this.setHardness(100);
             this.setBlockName("Oil(flowing)");
+            this.blockIndexInTexture = textureIndex;
     }
     
-    public static void makeInstance(int blockId)
+    public static void makeInstance(int blockId, int textureIndex)
     {
-    	instance = new OilFlow(blockId);
+    	instance = new OilFlow(blockId, textureIndex);
     }
     
     public static OilFlow getInstance()

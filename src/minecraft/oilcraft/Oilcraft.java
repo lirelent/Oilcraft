@@ -71,20 +71,23 @@ public class Oilcraft {
 		coolantSystemItem = new CoolantSystem(CONFIGURATION.get("items",
 				"Coolant_System", 8006).getInt());
 
-		OilGenerator.makeInstance(CONFIGURATION.get("blocks", "Oil_Generator",
-				500).getInt());
-		int stillId = CONFIGURATION.get("blocks", "Oil_Still", 601)
-				.getInt();
-		OilStill.makeInstance(stillId);
-		OilFlow.makeInstance(stillId - 1);
+		OilGenerator.makeInstance(
+				CONFIGURATION.get("blocks", "Oil_Generator", 500).getInt(), 0);
+		int stillId = CONFIGURATION.get("blocks", "Oil_Still", 601).getInt();
+		OilStill.makeInstance(stillId, 7);
+		// Minecraft makes the silly assumption that the block Id of the flow
+		// version of a liquid is 1 less than the still version of that same
+		// liquid. In this way it can build a connection between the two blocks
+		// so they can spawn each other.
+		OilFlow.makeInstance(stillId - 1, 7);
 
 		CONFIGURATION.save();
+		
+		proxy.preInit();
 	}
 
 	@Init
 	public void load(FMLInitializationEvent event) {
-		proxy.registerRenderers();
-
 		LanguageRegistry.addName(voltageRegulatorItem, "Voltage Regulator");
 		LanguageRegistry.addName(alternatorItem, "Alternator");
 		LanguageRegistry.addName(controlPanelItem, "Control Panel");

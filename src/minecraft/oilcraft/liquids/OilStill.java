@@ -20,18 +20,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class OilStill extends BlockStationary implements ILiquid {
 	private static OilStill instance;
 	
-	private OilStill(int blockId)
+	private OilStill(int blockId, int textureIndex)
     {
             super(blockId, Material.water);
         	FMLLog.warning("still id is "+blockId);
             this.setHardness(100);
             this.disableStats();
             this.setBlockName("Oil(still)");
+            this.blockIndexInTexture = textureIndex;
     }
 	
-	public static void makeInstance(int blockId)
+	public static void makeInstance(int blockId, int textureIndex)
 	{
-		instance = new OilStill(blockId);
+		instance = new OilStill(blockId, textureIndex);
 	}
 	
 	public static OilStill getInstance()
