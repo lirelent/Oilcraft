@@ -15,69 +15,62 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author lirelent
- *
+ * 
  */
 public class OilStill extends BlockStationary implements ILiquid {
 	private static OilStill instance;
-	
-	private OilStill(int blockId, int textureIndex)
-    {
-            super(blockId, Material.water);
-        	FMLLog.warning("still id is "+blockId);
-            this.setHardness(100);
-            this.disableStats();
-            this.setBlockName("Oil(still)");
-            this.blockIndexInTexture = textureIndex;
-    }
-	
-	public static void makeInstance(int blockId, int textureIndex)
-	{
+
+	private OilStill(int blockId, int textureIndex) {
+		super(blockId, Material.water);
+        this.setHardness(100.0F);
+		this.disableStats();
+		this.setBurnProperties(blockId, 50, 80);
+		this.setBlockName("oil");
+        this.setRequiresSelfNotify();
+        this.setLightOpacity(255);
+		this.blockIndexInTexture = textureIndex;
+	}
+
+	public static void makeInstance(int blockId, int textureIndex) {
 		instance = new OilStill(blockId, textureIndex);
 	}
-	
-	public static OilStill getInstance()
-	{
+
+	public static OilStill getInstance() {
 		return instance;
 	}
 
-    @Override
-    public String getTextureFile()
-    {
-            return Oilcraft.BLOCK_TEXTURE;
-    }
+	@Override
+	public String getTextureFile() {
+		return Oilcraft.BLOCK_TEXTURE;
+	}
 
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-            return 0xFFFFFF;
-    }
+	@SideOnly(Side.CLIENT)
+	public int getBlockColor() {
+		return 0xFFFFFF;
+	}
 
-    @Override
-    public int tickRate()
-    {
-            return 20;
-    }
+	@Override
+	public int tickRate() {
+		return 20;
+	}
 
-    @Override
-    public int stillLiquidId()
-    {
-            return this.blockID;
-    }
+	@Override
+	public int stillLiquidId() {
+		return this.blockID;
+	}
 
-    @Override
-    public boolean isMetaSensitive()
-    {
-            return false;
-    }
+	@Override
+	public boolean isMetaSensitive() {
+		return false;
+	}
 
-    @Override
-    public int stillLiquidMeta()
-    {
-            return 0;
-    }
+	@Override
+	public int stillLiquidMeta() {
+		return 0;
+	}
 
-    @Override
-    public boolean isBlockReplaceable(World world, int x, int y, int z) {
-    	return true;
-    }
+	@Override
+	public boolean isBlockReplaceable(World world, int x, int y, int z) {
+		return true;
+	}
 }
