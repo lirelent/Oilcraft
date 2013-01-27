@@ -19,11 +19,7 @@ import oilcraft.Oilcraft;
  *
  */
 public class OilFlow extends BlockFlowing implements ILiquid {
-	private static OilFlow instance; 
-	
-    int numAdjacentSources = 0;
-    int[] flowCost = new int[4];
-    boolean[] isOptimalFlowDirection = new boolean[4];
+	private static OilFlow instance;
 
     private OilFlow(int blockId, int textureIndex)
     {

@@ -54,9 +54,9 @@ public class OilGenerator extends BlockMachine {
 	{
 		if (side == 0 || side == 1) { return this.blockIndexInTexture; }
 
-		if (metadata >= GAS_GENERATOR_METADATA)
+		if (metadata >= JET_GENERATOR_METADATA)
 		{
-			metadata -= GAS_GENERATOR_METADATA;
+			metadata -= JET_GENERATOR_METADATA;
 
 			// If it is the front side
 			if (side == metadata + 2)
@@ -66,9 +66,9 @@ public class OilGenerator extends BlockMachine {
 			// If it is the back side
 			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal()) { return this.blockIndexInTexture + 6; }
 		}
-		else if (metadata >= JET_GENERATOR_METADATA)
+		else if (metadata >= GAS_GENERATOR_METADATA)
 		{
-			metadata -= JET_GENERATOR_METADATA;
+			metadata -= GAS_GENERATOR_METADATA;
 
 			// If it is the front side
 			if (side == metadata + 2)

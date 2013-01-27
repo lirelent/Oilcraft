@@ -114,7 +114,7 @@ public class Oilcraft {
 		ReplaceWithLiquidWorldGen liquidWorldGen = new ReplaceWithLiquidWorldGen();
 		ToGenerateLiquid oilGen = new ToGenerateLiquid(55, 60, 1, 5, 16, 5,
 				OilStill.getInstance().blockID);
-		liquidWorldGen.add(oilGen, "Oil");
+		liquidWorldGen.add(oilGen, "oil");
 	}
 
 	public void registerRecipes() {
