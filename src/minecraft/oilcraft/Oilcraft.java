@@ -18,30 +18,34 @@ import oilcraft.parts.FuelSystem;
 import oilcraft.parts.LubricationSystem;
 import oilcraft.parts.VoltageRegulator;
 import oilcraft.proxy.CommonProxy;
+import universalelectricity.prefab.network.PacketManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = "OilCraft", name = "OilCraft", version = Oilcraft.VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(channels = { "OilCraft" }, clientSideRequired = true, serverSideRequired = false,
+			packetHandler = PacketManager.class)
 public class Oilcraft {
 	@SidedProxy(clientSide = "oilcraft.proxy.ClientProxy", serverSide = "oilcraft.proxy.CommonProxy")
 	public static CommonProxy proxy;
+
+	@Instance("OilCraft")
+	public static Oilcraft instance;
 
 	public static final String VERSION = "0.0.1";
 	public static final String TEXTURE_PATH = "/oilcraft/textures/";
 	public static final String BLOCK_TEXTURE = TEXTURE_PATH + "blocks.png";
 	public static final String ITEM_TEXTURE = TEXTURE_PATH + "items.png";
-
-	public static final Configuration CONFIGURATION = new Configuration(
-			new File(Loader.instance().getConfigDir(), "OilCraft.cfg"));
 
 	// Items
 	public static Item voltageRegulatorItem;
@@ -54,26 +58,31 @@ public class Oilcraft {
 
 	@PreInit
 	public void preLoad(FMLPreInitializationEvent event) {
-		CONFIGURATION.load();
+		NetworkRegistry.instance().registerGuiHandler(this, this.proxy);
+		
+		Configuration conf = new Configuration(
+				new File(Loader.instance().getConfigDir(), "OilCraft.cfg"));
+		
+		conf.load();
 
-		voltageRegulatorItem = new VoltageRegulator(CONFIGURATION.get("items",
+		voltageRegulatorItem = new VoltageRegulator(conf.get("items",
 				"Voltage_Regulator", 8000).getInt());
-		alternatorItem = new Alternator(CONFIGURATION.get("items",
+		alternatorItem = new Alternator(conf.get("items",
 				"Alternator", 8001).getInt());
-		controlPanelItem = new ControlPanel(CONFIGURATION.get("items",
+		controlPanelItem = new ControlPanel(conf.get("items",
 				"Control_Panel", 8002).getInt());
-		engineItem = new Engine(CONFIGURATION.get("items", "Engine", 8003)
+		engineItem = new Engine(conf.get("items", "Engine", 8003)
 				.getInt());
-		fuelSystemItem = new FuelSystem(CONFIGURATION.get("items",
+		fuelSystemItem = new FuelSystem(conf.get("items",
 				"Fuel_System", 8004).getInt());
-		lubricationSystemItem = new LubricationSystem(CONFIGURATION.get(
+		lubricationSystemItem = new LubricationSystem(conf.get(
 				"items", "Lubcrication_System", 8005).getInt());
-		coolantSystemItem = new CoolantSystem(CONFIGURATION.get("items",
+		coolantSystemItem = new CoolantSystem(conf.get("items",
 				"Coolant_System", 8006).getInt());
 
 		OilGenerator.makeInstance(
-				CONFIGURATION.get("blocks", "Oil_Generator", 500).getInt(), 0);
-		int stillId = CONFIGURATION.get("blocks", "Oil_Still", 601).getInt();
+				conf.get("blocks", "Oil_Generator", 500).getInt(), 0);
+		int stillId = conf.get("blocks", "Oil_Still", 601).getInt();
 		OilStill.makeInstance(stillId, 7);
 		// Minecraft makes the silly assumption that the block Id of the flow
 		// version of a liquid is 1 less than the still version of that same
@@ -81,8 +90,8 @@ public class Oilcraft {
 		// so they can spawn each other.
 		OilFlow.makeInstance(stillId - 1, 7);
 
-		CONFIGURATION.save();
-		
+		conf.save();
+
 		proxy.preInit();
 	}
 

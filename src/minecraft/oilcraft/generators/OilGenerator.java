@@ -3,6 +3,7 @@ package oilcraft.generators;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -21,6 +22,10 @@ public class OilGenerator extends BlockMachine {
 	public static final int OIL_GENERATOR_METADATA = 0;
 	public static final int GAS_GENERATOR_METADATA = 4;
 	public static final int JET_GENERATOR_METADATA = 8;
+
+	public static final int OIL_GENERATOR_GUI = 0;
+	public static final int GAS_GENERATOR_GUI = 1;
+	public static final int JET_GENERATOR_GUI = 2;
 
 	private static OilGenerator instance;
 
@@ -50,47 +55,64 @@ public class OilGenerator extends BlockMachine {
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int metadata)
-	{
-		if (side == 0 || side == 1) { return this.blockIndexInTexture; }
+	public int getBlockTextureFromSideAndMetadata(int side, int metadata) {
+		if (side == 0 || side == 1) {
+			return this.blockIndexInTexture;
+		}
 
-		if (metadata >= JET_GENERATOR_METADATA)
-		{
+		if (metadata >= JET_GENERATOR_METADATA) {
 			metadata -= JET_GENERATOR_METADATA;
 
 			// If it is the front side
-			if (side == metadata + 2)
-			{
+			if (side == metadata + 2) {
 				return this.blockIndexInTexture + 2;
 			}
 			// If it is the back side
-			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal()) { return this.blockIndexInTexture + 6; }
-		}
-		else if (metadata >= GAS_GENERATOR_METADATA)
-		{
+			else if (side == ForgeDirection.getOrientation(metadata + 2)
+					.getOpposite().ordinal()) {
+				return this.blockIndexInTexture + 6;
+			}
+		} else if (metadata >= GAS_GENERATOR_METADATA) {
 			metadata -= GAS_GENERATOR_METADATA;
 
 			// If it is the front side
-			if (side == metadata + 2)
-			{
+			if (side == metadata + 2) {
 				return this.blockIndexInTexture + 3;
 			}
 			// If it is the back side
-			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal()) { return this.blockIndexInTexture + 2; }
+			else if (side == ForgeDirection.getOrientation(metadata + 2)
+					.getOpposite().ordinal()) {
+				return this.blockIndexInTexture + 2;
+			}
 
 			return this.blockIndexInTexture + 4;
-		}
-		else
-		{
+		} else {
 			// If it is the front side
-			if (side == metadata + 2)
-			{
+			if (side == metadata + 2) {
 				return this.blockIndexInTexture + 3;
 			}
 			// If it is the back side
-			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal()) { return this.blockIndexInTexture + 5; }
+			else if (side == ForgeDirection.getOrientation(metadata + 2)
+					.getOpposite().ordinal()) {
+				return this.blockIndexInTexture + 5;
+			}
 		}
 
 		return this.blockIndexInTexture + 1;
+	}
+
+	@Override
+	public boolean onMachineActivated(World par1World, int x, int y, int z,
+			EntityPlayer par5EntityPlayer, int side, float hitX, float hitY,
+			float hitZ) {
+		TileEntity tileEntity = par1World.getBlockTileEntity(x, y, z);
+		if (tileEntity == null || par5EntityPlayer.isSneaking()) {
+			return false;
+		}
+		if (!par1World.isRemote) {
+			par5EntityPlayer.openGui(Oilcraft.instance, OIL_GENERATOR_GUI,
+					par1World, x, y, z);
+		}
+		return true;
 	}
 }
