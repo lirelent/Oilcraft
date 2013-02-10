@@ -7,6 +7,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import oilcraft.Oilcraft;
+
 import org.lwjgl.opengl.GL11;
 
 public class OilGeneratorGuiContainer extends GuiContainer
@@ -30,7 +32,7 @@ public class OilGeneratorGuiContainer extends GuiContainer
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
 	{
 		// draw your Gui here, only thing you need to change is the path
-		int texture = mc.renderEngine.getTexture("/your/texture/path/here.png");
+		int texture = mc.renderEngine.getTexture(Oilcraft.TEXTURE_PATH + "OilGenerator.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(texture);
 		int x = (width - xSize) / 2;
