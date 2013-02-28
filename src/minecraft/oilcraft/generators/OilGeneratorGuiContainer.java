@@ -67,11 +67,11 @@ public class OilGeneratorGuiContainer extends GuiContainer
 
 	/*
 	 * top of tank is 4 px down and bottom is 72 px down
+	 * giving a height of 68
 	 */
-	int emptyPixels = (int) ((72 - 4) * (1 - 0.25));
-	FMLLog.warning("Empty pixels is "+emptyPixels);
+	int emptyPixels = (int) (68 * (1 - 0.25));
 	//this.drawTexturedModalRect(x + 5, y + 4, 177, 1, 26, 3 + fillPixels);
-	this.drawTexturedModalRect(x + 5, y + 4 + 4 + emptyPixels, 177, 72 + 4 + emptyPixels, 26, 4 + ((72-4) - emptyPixels));
+	this.drawTexturedModalRect(x + 5, y + 8 + emptyPixels, 177, 4 + emptyPixels, 26, 68 - emptyPixels);
     }
 
     public Object getServerGuiElement(int id,
