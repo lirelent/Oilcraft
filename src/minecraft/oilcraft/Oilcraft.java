@@ -20,6 +20,7 @@ package oilcraft;
 
 import java.io.File;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import oilcraft.generators.OilGenerator;
@@ -36,6 +37,7 @@ import oilcraft.parts.FuelSystem;
 import oilcraft.parts.LubricationSystem;
 import oilcraft.parts.VoltageRegulator;
 import oilcraft.proxy.CommonProxy;
+import universalelectricity.components.common.TabBC;
 import universalelectricity.prefab.network.PacketManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -61,9 +63,17 @@ public class Oilcraft {
 	public static Oilcraft instance;
 
 	public static final String VERSION = "0.0.1";
-	public static final String TEXTURE_PATH = "/oilcraft/textures/";
-	public static final String BLOCK_TEXTURE = TEXTURE_PATH + "blocks.png";
-	public static final String ITEM_TEXTURE = TEXTURE_PATH + "items.png";
+	
+	public static final String RESOURCE_PATH = "/mods/oilcraft/";
+
+	public static final String TEXTURE_DIRECTORY = RESOURCE_PATH + "textures/";
+	public static final String LANGUAGE_PATH = RESOURCE_PATH + "languages/";
+	public static final String GUI_DIRECTORY = TEXTURE_DIRECTORY + "gui/";
+	public static final String BLOCK_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "blocks/";
+	public static final String ITEM_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "items/";
+	public static final String MODEL_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "models/";
+
+	public static final String TEXTURE_NAME_PREFIX = "oilcraft:";
 
 	// Items
 	public static Item voltageRegulatorItem;

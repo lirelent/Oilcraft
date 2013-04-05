@@ -18,25 +18,24 @@
  */
 package oilcraft.generators;
 
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import oilcraft.OilCreativeTab;
 import oilcraft.Oilcraft;
 import universalelectricity.core.UniversalElectricity;
-import universalelectricity.prefab.BlockMachine;
-import universalelectricity.prefab.UETab;
+import universalelectricity.prefab.block.BlockAdvanced;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Singleton version of block for oil generator
  * 
  * @author lirelent
  */
-public class OilGenerator extends BlockMachine {
+public class OilGenerator extends BlockAdvanced {
 	public static final int OIL_GENERATOR_METADATA = 0;
 	public static final int GAS_GENERATOR_METADATA = 4;
 	public static final int JET_GENERATOR_METADATA = 8;
@@ -46,11 +45,12 @@ public class OilGenerator extends BlockMachine {
 	public static final int JET_GENERATOR_GUI = 2;
 
 	private static OilGenerator instance;
+	private Icon iconOutput;
+	private Icon iconMachineSide;
+	private Icon iconOilGenerator;
 
 	private OilGenerator(int id, int textureIndex) {
-		super("Oil Generator", id, UniversalElectricity.machine, OilCreativeTab
-				.getInstance());
-		this.blockIndexInTexture = textureIndex;
+		super(id, UniversalElectricity.machine);
 		this.setStepSound(soundMetalFootstep);
 	}
 
@@ -63,19 +63,28 @@ public class OilGenerator extends BlockMachine {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.blockIcon = par1IconRegister
+				.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX + "machine");
+		this.iconOutput = par1IconRegister
+				.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX + "machine_output");
+
+		this.iconMachineSide = par1IconRegister
+				.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX + "machine_side");
+		this.iconOilGenerator = par1IconRegister
+				.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX + "oilGenerator");
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new OilGeneratorTileEntity();
 	}
 
 	@Override
-	public String getTextureFile() {
-		return Oilcraft.BLOCK_TEXTURE;
-	}
-
-	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int metadata) {
+	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata) {
 		if (side == 0 || side == 1) {
-			return this.blockIndexInTexture;
+			return this.blockIcon;
 		}
 
 		if (metadata >= JET_GENERATOR_METADATA) {
@@ -83,40 +92,38 @@ public class OilGenerator extends BlockMachine {
 
 			// If it is the front side
 			if (side == metadata + 2) {
-				return this.blockIndexInTexture + 2;
+				return this.iconOilGenerator;
 			}
 			// If it is the back side
 			else if (side == ForgeDirection.getOrientation(metadata + 2)
 					.getOpposite().ordinal()) {
-				return this.blockIndexInTexture + 6;
+				return this.iconOutput;
 			}
 		} else if (metadata >= GAS_GENERATOR_METADATA) {
 			metadata -= GAS_GENERATOR_METADATA;
 
 			// If it is the front side
 			if (side == metadata + 2) {
-				return this.blockIndexInTexture + 3;
+				return this.iconOilGenerator;
 			}
 			// If it is the back side
 			else if (side == ForgeDirection.getOrientation(metadata + 2)
 					.getOpposite().ordinal()) {
-				return this.blockIndexInTexture + 2;
+				return this.iconOutput;
 			}
-
-			return this.blockIndexInTexture + 4;
 		} else {
 			// If it is the front side
 			if (side == metadata + 2) {
-				return this.blockIndexInTexture + 3;
+				return this.iconOilGenerator;
 			}
 			// If it is the back side
 			else if (side == ForgeDirection.getOrientation(metadata + 2)
 					.getOpposite().ordinal()) {
-				return this.blockIndexInTexture + 5;
+				return this.iconOutput;
 			}
 		}
 
-		return this.blockIndexInTexture + 1;
+		return this.iconMachineSide;
 	}
 
 	@Override
