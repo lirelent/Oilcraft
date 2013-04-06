@@ -18,21 +18,12 @@
  */
 package oilcraft.proxy;
 
-import basiccomponents.client.gui.GuiBatteryBox;
-import basiccomponents.client.gui.GuiCoalGenerator;
-import basiccomponents.client.gui.GuiElectricFurnace;
-import basiccomponents.common.BasicComponents;
-import basiccomponents.common.tileentity.TileEntityBatteryBox;
-import basiccomponents.common.tileentity.TileEntityCoalGenerator;
-import basiccomponents.common.tileentity.TileEntityElectricFurnace;
-import oilcraft.Oilcraft;
-import oilcraft.generators.OilGenerator;
-import oilcraft.generators.OilGeneratorGuiContainer;
-import oilcraft.generators.OilGeneratorTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
+import oilcraft.generators.OilGenerator;
+import oilcraft.generators.OilGeneratorGuiContainer;
+import oilcraft.generators.OilGeneratorTileEntity;
 
 public class ClientProxy extends CommonProxy
 {
@@ -40,9 +31,6 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void preInit()
 	{
-		// Preload textures
-		MinecraftForgeClient.preloadTexture(Oilcraft.BLOCK_TEXTURE);
-		MinecraftForgeClient.preloadTexture(Oilcraft.ITEM_TEXTURE);
 	}
 
 	@Override

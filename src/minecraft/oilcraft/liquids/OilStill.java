@@ -23,7 +23,9 @@ package oilcraft.liquids;
 
 import net.minecraft.block.BlockStationary;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.liquids.ILiquid;
 import oilcraft.Oilcraft;
@@ -36,17 +38,19 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  */
 public class OilStill extends BlockStationary implements ILiquid {
+
 	private static OilStill instance;
+
+	@SideOnly(Side.CLIENT)
+	private Icon[] theIcon;
 
 	private OilStill(int blockId, int textureIndex) {
 		super(blockId, Material.water);
-        this.setHardness(100.0F);
+		this.setHardness(100.0F);
 		this.disableStats();
 		this.setBurnProperties(blockId, 50, 80);
-		this.setBlockName("oil");
-        this.setRequiresSelfNotify();
-        this.setLightOpacity(255);
-		this.blockIndexInTexture = textureIndex;
+		this.setUnlocalizedName("oil");
+		this.setLightOpacity(255);
 	}
 
 	public static void makeInstance(int blockId, int textureIndex) {
@@ -58,18 +62,23 @@ public class OilStill extends BlockStationary implements ILiquid {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return Oilcraft.BLOCK_TEXTURE;
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.theIcon = new Icon[] { par1IconRegister.registerIcon("oil"),
+				par1IconRegister.registerIcon("oil_flow") };
 	}
+    
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+        return par1 != 0 && par1 != 1 ? this.theIcon[1] : this.theIcon[0];
+    }
 
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor() {
 		return 0xFFFFFF;
-	}
-
-	@Override
-	public int tickRate() {
-		return 20;
 	}
 
 	@Override

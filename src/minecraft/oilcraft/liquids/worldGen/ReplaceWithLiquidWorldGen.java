@@ -85,8 +85,7 @@ public class ReplaceWithLiquidWorldGen implements IWorldGenerator {
 					for (int z = chunkZ; z < chunkZ + 16; ++z) {
 						for (int level = liquid.minWorldLevel; level <= liquid.maxWorldLevel; ++level) {
 							if (world.getBlockId(x, level, z) != 0) {
-								if (!world
-										.setBlockAndMetadataWithUpdate(x, level, z, liquid.blockId, 0, true)) {
+								if (!world.setBlock(x, level, z, liquid.blockId, 0, 2)) {
 									FMLLog.warning("Could not place oil at "
 											+ x + ", " + level + ", " + z);
 								}

@@ -20,7 +20,6 @@ package oilcraft;
 
 import java.io.File;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import oilcraft.generators.OilGenerator;
@@ -29,15 +28,7 @@ import oilcraft.liquids.OilFlow;
 import oilcraft.liquids.OilStill;
 import oilcraft.liquids.worldGen.ReplaceWithLiquidWorldGen;
 import oilcraft.liquids.worldGen.ToGenerateLiquid;
-import oilcraft.parts.Alternator;
-import oilcraft.parts.ControlPanel;
-import oilcraft.parts.CoolantSystem;
-import oilcraft.parts.Engine;
-import oilcraft.parts.FuelSystem;
-import oilcraft.parts.LubricationSystem;
-import oilcraft.parts.VoltageRegulator;
 import oilcraft.proxy.CommonProxy;
-import universalelectricity.components.common.TabBC;
 import universalelectricity.prefab.network.PacketManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -92,21 +83,6 @@ public class Oilcraft {
 				new File(Loader.instance().getConfigDir(), "OilCraft.cfg"));
 		
 		conf.load();
-
-		voltageRegulatorItem = new VoltageRegulator(conf.get("items",
-				"Voltage_Regulator", 8000).getInt());
-		alternatorItem = new Alternator(conf.get("items",
-				"Alternator", 8001).getInt());
-		controlPanelItem = new ControlPanel(conf.get("items",
-				"Control_Panel", 8002).getInt());
-		engineItem = new Engine(conf.get("items", "Engine", 8003)
-				.getInt());
-		fuelSystemItem = new FuelSystem(conf.get("items",
-				"Fuel_System", 8004).getInt());
-		lubricationSystemItem = new LubricationSystem(conf.get(
-				"items", "Lubcrication_System", 8005).getInt());
-		coolantSystemItem = new CoolantSystem(conf.get("items",
-				"Coolant_System", 8006).getInt());
 
 		OilGenerator.makeInstance(
 				conf.get("blocks", "Oil_Generator", 500).getInt(), 0);

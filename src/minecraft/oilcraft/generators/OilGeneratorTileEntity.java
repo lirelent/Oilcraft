@@ -18,9 +18,6 @@
  */
 package oilcraft.generators;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -30,10 +27,11 @@ import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
-import universalelectricity.core.implement.IConductor;
-import universalelectricity.prefab.tile.TileEntityElectricityProducer;
+import universalelectricity.components.common.block.BlockBasicMachine;
+import universalelectricity.core.block.IConductor;
+import universalelectricity.prefab.tile.TileEntityElectrical;
 
-public class OilGeneratorTileEntity extends TileEntityElectricityProducer
+public class OilGeneratorTileEntity extends TileEntityElectrical
 		implements IInventory, ITankContainer {
 	/**
 	 * Maximum amount of energy needed to generate electricity
@@ -229,6 +227,23 @@ public class OilGeneratorTileEntity extends TileEntityElectricityProducer
 			return this.internalLiquidTank;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean canConnect(ForgeDirection direction) {
+		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() -
+				OilGenerator.OIL_GENERATOR_METADATA + 2);
+	}
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		// for now nothing can be put inside here, but eventually oil bucket
+		return false;
 	}
 
 }

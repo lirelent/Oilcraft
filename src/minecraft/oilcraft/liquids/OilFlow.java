@@ -24,10 +24,14 @@ package oilcraft.liquids;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowing;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.liquids.ILiquid;
 import oilcraft.Oilcraft;
@@ -37,7 +41,11 @@ import oilcraft.Oilcraft;
  *
  */
 public class OilFlow extends BlockFlowing implements ILiquid {
+	
 	private static OilFlow instance;
+
+	@SideOnly(Side.CLIENT)
+	private Icon[] theIcon;
 
     private OilFlow(int blockId, int textureIndex)
     {
@@ -45,10 +53,8 @@ public class OilFlow extends BlockFlowing implements ILiquid {
             this.disableStats();
             this.setHardness(100.0F);
             this.setBurnProperties(blockId, 50, 80);
-            this.setBlockName("oil");
-            this.setRequiresSelfNotify();
+            this.setUnlocalizedName("oil");
             this.setLightOpacity(255);
-            this.blockIndexInTexture = textureIndex;
     }
     
     public static void makeInstance(int blockId, int textureIndex)
@@ -61,10 +67,21 @@ public class OilFlow extends BlockFlowing implements ILiquid {
     	return instance;
     }
 
+
 	@Override
-	public String getTextureFile() {
-		return Oilcraft.BLOCK_TEXTURE;
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.theIcon = new Icon[] { par1IconRegister.registerIcon("oil"),
+				par1IconRegister.registerIcon("oil_flow") };
 	}
+    
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+        return par1 != 0 && par1 != 1 ? this.theIcon[1] : this.theIcon[0];
+    }
 
 	@Override
 	public int stillLiquidId() {
