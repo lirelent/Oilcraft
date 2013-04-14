@@ -101,14 +101,6 @@ public class Oilcraft {
 
 	@Init
 	public void load(FMLInitializationEvent event) {
-		LanguageRegistry.addName(voltageRegulatorItem, "Voltage Regulator");
-		LanguageRegistry.addName(alternatorItem, "Alternator");
-		LanguageRegistry.addName(controlPanelItem, "Control Panel");
-		LanguageRegistry.addName(engineItem, "Engine");
-		LanguageRegistry.addName(fuelSystemItem, "Fuel System");
-		LanguageRegistry.addName(lubricationSystemItem, "Lubrication System");
-		LanguageRegistry.addName(coolantSystemItem, "Coolant System");
-
 		OilGenerator oilGenerator = OilGenerator.getInstance();
 		LanguageRegistry.addName(oilGenerator, "Oil Generator");
 		GameRegistry.registerBlock(oilGenerator, "oilGenerator");
