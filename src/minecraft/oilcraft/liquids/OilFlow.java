@@ -54,7 +54,7 @@ public class OilFlow extends BlockFlowing implements ILiquid {
             this.setHardness(100.0F);
             this.setBurnProperties(blockId, 50, 80);
             this.setUnlocalizedName("oil");
-            this.setLightOpacity(255);
+            this.setLightOpacity(1);
     }
     
     public static void makeInstance(int blockId, int textureIndex)
@@ -71,8 +71,11 @@ public class OilFlow extends BlockFlowing implements ILiquid {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.theIcon = new Icon[] { par1IconRegister.registerIcon("oil"),
-				par1IconRegister.registerIcon("oil_flow") };
+		this.theIcon = new Icon[] {
+				par1IconRegister.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX
+						+ "oil"),
+				par1IconRegister.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX
+						+ "oil_flow") };
 	}
     
     /**

@@ -50,7 +50,7 @@ public class OilStill extends BlockStationary implements ILiquid {
 		this.disableStats();
 		this.setBurnProperties(blockId, 50, 80);
 		this.setUnlocalizedName("oil");
-		this.setLightOpacity(255);
+		this.setLightOpacity(1);
 	}
 
 	public static void makeInstance(int blockId, int textureIndex) {
@@ -64,17 +64,20 @@ public class OilStill extends BlockStationary implements ILiquid {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.theIcon = new Icon[] { par1IconRegister.registerIcon("oil"),
-				par1IconRegister.registerIcon("oil_flow") };
+		this.theIcon = new Icon[] {
+				par1IconRegister.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX
+						+ "oil"),
+				par1IconRegister.registerIcon(Oilcraft.TEXTURE_NAME_PREFIX
+						+ "oil_flow") };
 	}
-    
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
-    {
-        return par1 != 0 && par1 != 1 ? this.theIcon[1] : this.theIcon[0];
-    }
+
+	/**
+	 * From the specified side and block metadata retrieves the blocks texture.
+	 * Args: side, metadata
+	 */
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		return par1 != 0 && par1 != 1 ? this.theIcon[1] : this.theIcon[0];
+	}
 
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor() {
