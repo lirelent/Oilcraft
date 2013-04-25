@@ -2,8 +2,8 @@ OilCraft: Adding oil fuel for Universal Electricity
 --
 ==
 
-Original Author: Samrg472
-Updated By: Calclavia
+Original Author: samrg472 <br />
+Updated By: lirelent
 
 ######TODO:</b><br />
 
